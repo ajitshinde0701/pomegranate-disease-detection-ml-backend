@@ -1,0 +1,22 @@
+# Exclude git repository
+.git
+.gitignore
+
+# Exclude python virtual environment and caches
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Exclude training dataset to keep image size small
+dataset/
+
+# Exclude local uploads
+uploads/*
+!uploads/.gitkeep
+
+# Exclude IDE folders
+.vscode/
+.idea/
