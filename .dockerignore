@@ -1,0 +1,22 @@
+# Exclude git repository
+.git
+.gitignore
+
+# Exclude python virtual environment and caches from the sub-folder
+anarMitra-ml-backend-api/venv/
+anarMitra-ml-backend-api/.venv/
+anarMitra-ml-backend-api/__pycache__/
+anarMitra-ml-backend-api/**/*.pyc
+anarMitra-ml-backend-api/**/*.pyo
+anarMitra-ml-backend-api/**/*.pyd
+
+# Exclude training dataset to keep image size small
+anarMitra-ml-backend-api/dataset/
+
+# Exclude local uploads
+anarMitra-ml-backend-api/uploads/*
+!anarMitra-ml-backend-api/uploads/.gitkeep
+
+# Exclude IDE folders
+.vscode/
+.idea/
