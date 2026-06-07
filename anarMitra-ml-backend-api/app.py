@@ -7,7 +7,10 @@ from utils.validation import validate_image
 
 app = Flask(__name__)
 
-CORS(app)
+# Explicit CORS configuration for production (Render)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=False,
+     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+     methods=["GET", "POST", "OPTIONS"])
 
 UPLOAD_FOLDER = "uploads"
 
@@ -19,15 +22,23 @@ def health():
         "status": "Backend Running"
     })
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["POST", "OPTIONS"])
 def predict():
+    # Handle CORS preflight
+    if request.method == "OPTIONS":
+        return jsonify({"status": "ok"}), 200
 
     if "file" not in request.files:
         return jsonify({
             "error": "No image uploaded"
-        })
+        }), 400
 
     file = request.files["file"]
+
+    if file.filename == "":
+        return jsonify({
+            "error": "No file selected"
+        }), 400
 
     image_path = os.path.join(UPLOAD_FOLDER, file.filename)
 
@@ -37,11 +48,12 @@ def predict():
     if not validate_image(image_path):
         return jsonify({
             "error": "Invalid image"
-        })
+        }), 400
 
     result = predict_disease(image_path)
 
     return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
