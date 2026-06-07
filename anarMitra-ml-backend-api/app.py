@@ -16,6 +16,20 @@ UPLOAD_FOLDER = "uploads"
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+@app.route("/", methods=["GET"])
+def index():
+    return jsonify({
+        "api": "AnarMitra ML Backend",
+        "version": "1.0.0",
+        "status": "Running",
+        "description": "Pomegranate Disease Detection API",
+        "endpoints": {
+            "GET  /":        "API info (this response)",
+            "GET  /health":  "Health check",
+            "POST /predict": "Predict disease from image (multipart/form-data, field: 'file')"
+        }
+    })
+
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({
